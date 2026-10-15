@@ -7,6 +7,9 @@ import WS from './ws-methods';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 
+// NOTE: The WebSocket App ID is configured in ws-methods.js or _common/base/socket_base.js.
+// Edit those files to inject your App ID: 34GmfweMZyGgru7DXUrVy
+
 let client_store, common_store;
 
 // TODO: update commented statements to the corresponding functions from app
