@@ -23,7 +23,8 @@ const BinarySocketBase = (() => {
     // Evaluated lazily (not at module load time) so window.location is available.
     const getPublicWSUrl = () => {
         const base = getApiV4BaseUrl(); // e.g. "https://api.derivws.com"
-        return `${base.replace(/^https?:\/\//, 'wss://')}/trading/v1/options/ws/public`;
+        // ✅ ADDED YOUR DERIV APP ID HERE
+        return `${base.replace(/^https?:\/\//, 'wss://')}/trading/v1/options/ws/public?app_id=34GmfweMZyGgru7DXUrVy`;
     };
     let configured_ws_url = null;
 
