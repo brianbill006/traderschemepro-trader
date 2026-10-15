@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
 module.exports = function (env) {
@@ -25,9 +26,9 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
             splitChunks: {
                 chunks: 'all',
-                minSize: 75000, // 75KB minimum chunk size for balanced granularity
+                minSize: 75000,
                 minSizeReduction: 75000,
-                maxSize: 1000000, // 1MB max chunks - fewer chunks for better performance
+                maxSize: 1000000,
                 maxAsyncRequests: 30,
                 maxInitialRequests: 30,
                 cacheGroups: {
@@ -47,35 +48,19 @@ module.exports = function (env) {
             },
         },
         output: {
-            filename: 'trader/js/[name].js',
-            publicPath: base,
+            filename: 'js/[name].js',
+            publicPath: '/',
             path: path.resolve(__dirname, '../dist'),
-            chunkFilename: 'trader/js/trader.[name].[contenthash].js',
-            libraryExport: 'default',
-            library: '@deriv/trader',
-            libraryTarget: 'umd',
+            chunkFilename: 'js/[name].[contenthash].js',
         },
-        externals: [
-            {
-                react: 'react',
-                'react-dom': 'react-dom',
-                'react-router-dom': 'react-router-dom',
-                'react-router': 'react-router',
-                mobx: 'mobx',
-                'mobx-react-lite': 'mobx-react-lite',
-                '@deriv/shared': '@deriv/shared',
-                '@deriv/components': '@deriv/components',
-                '@deriv-com/translations': '@deriv-com/translations',
-                '@deriv-com/smartcharts-champion': '@deriv-com/smartcharts-champion',
-                moment: 'moment',
-                dayjs: 'dayjs',
-            },
-            /^@deriv\/shared\/.+$/,
-            /^@deriv\/components\/.+$/,
-            /^@deriv-com\/translations\/.+$/,
-            /^@deriv\/reports\/.+$/,
-        ],
+        // Removed externals so React and other dependencies are bundled into the app
         target: 'web',
-        plugins: plugins(base, false),
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: path.resolve(__dirname, '../src', 'index.html'),
+                filename: 'index.html',
+            }),
+            ...plugins(base, false),
+        ],
     };
 };
