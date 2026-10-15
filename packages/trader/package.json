@@ -25,7 +25,6 @@
     "bugs": {
         "url": "https://github.com/deriv-com/derivatives-trader/issues"
     },
-    "homepage": "https://github.com/deriv-com/derivatives-trader",
     "devDependencies": {
         "@babel/eslint-parser": "^7.25.1",
         "@babel/preset-react": "^7.24.7",
