@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
 module.exports = function (env) {
@@ -26,9 +25,9 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
             splitChunks: {
                 chunks: 'all',
-                minSize: 75000,
+                minSize: 75000, 
                 minSizeReduction: 75000,
-                maxSize: 1000000,
+                maxSize: 1000000, 
                 maxAsyncRequests: 30,
                 maxInitialRequests: 30,
                 cacheGroups: {
@@ -48,19 +47,35 @@ module.exports = function (env) {
             },
         },
         output: {
-            filename: 'js/[name].js',
-            publicPath: '/',
+            filename: 'trader/js/[name].js',
+            publicPath: base,
             path: path.resolve(__dirname, '../dist'),
-            chunkFilename: 'js/[name].[contenthash].js',
+            chunkFilename: 'trader/js/trader.[name].[contenthash].js',
+            libraryExport: 'default',
+            library: '@deriv/trader',
+            libraryTarget: 'umd',
         },
-        // Removed externals so React and other dependencies are bundled into the app
-        target: 'web',
-        plugins: [
-            new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, '../src', 'index.html'),
-                filename: 'index.html',
-            }),
-            ...plugins(base, false),
+        externals: [
+            {
+                react: 'react',
+                'react-dom': 'react-dom',
+                'react-router-dom': 'react-router-dom',
+                'react-router': 'react-router',
+                mobx: 'mobx',
+                'mobx-react-lite': 'mobx-react-lite',
+                '@deriv/shared': '@deriv/shared',
+                '@deriv/components': '@deriv/components',
+                '@deriv-com/translations': '@deriv-com/translations',
+                '@deriv-com/smartcharts-champion': '@deriv-com/smartcharts-champion',
+                moment: 'moment',
+                dayjs: 'dayjs',
+            },
+            /^@deriv\/shared\/.+$/,
+            /^@deriv\/components\/.+$/,
+            /^@deriv-com\/translations\/.+$/,
+            /^@deriv\/reports\/.+$/,
         ],
+        target: 'web',
+        plugins: plugins(base, false),
     };
 };
